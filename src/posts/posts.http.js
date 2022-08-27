@@ -35,23 +35,42 @@ const registerPost = (req ,res) => {
 
 
 
-
-
-const getByIdP = (req, res) => {
-    const id= req.params.id
-    const data = userControllers.getUserById(id)
+const getLoggedPosted = (req, res) => {
+    const userId= req.user.id
+    const data = postControllers.getLoggedPost(userId)
     if (data) {
         res.status(200).json(data)
     }
     else {
-        res.status(404).json({message:`El usuario con el id: ${id} no esta en la existencia de este humilde DB, chab0n`})
+        res.status(404).json({message:`id not logged in`})
+    }
+}
+
+const getByIdP = (req, res) => {
+    const id= req.params.id
+    const data = postControllers.getPostById(id)
+    if (data) {
+        res.status(200).json(data)
+    }
+    else {
+        res.status(404).json({message:`id not created`})
     }
 }
 
 
 
 
-
+const getByIdLogged = (req, res) => {
+    const id= req.params.id
+    const userId = req.user.id
+    const data = postControllers.getPostById(id, userId)
+    if (data) {
+        res.status(200).json(data)
+    }
+    else {
+        res.status(404).json({message:'id doesn`t match'})
+    }
+}
 
 
 
@@ -70,7 +89,7 @@ const myRemove = (req, res) => {
     }
 }
 const myEdit = (req, res) => {
-    const id= req.user.id
+    const id= req.params.id
     const data = req.body //duda
     if (!Object.keys(data).length) {
         res.status(400).json({message: 'missing data, dude'})
@@ -100,5 +119,7 @@ module.exports = {
     getByIdP, 
     registerPost, 
     myRemove, 
-    myEdit
+    myEdit,
+    getByIdLogged,
+    getLoggedPosted
   };    

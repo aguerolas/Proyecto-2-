@@ -1,4 +1,3 @@
-const {idFinder} = require('../users/users.controllers')
 const uuid = require('uuid');
 
 /* const{hashPassword, comparePassword} = require('../utils/crypt') */
@@ -24,7 +23,11 @@ const getAllPosts = () => {
 
 
 
-
+  const getLoggedPost = (user_id) => {
+    const data = posts.filter((item) =>  item.user_id === user_id);
+    return data.length ? data[0] : false
+  }
+  
 
 
 const getPostByIdLogged = (id, user_id) => {
@@ -43,7 +46,7 @@ const getPostByIdLogged = (id, user_id) => {
         id: uuid.v4(), //o y u
         title: data.title, //obligatory
 	    content:data.content, //obligatory 
-	    header_image: data.header_image?data.header_image: "" ,
+	    header_image: data.header_image ? data.header_image: "" ,
 	    user_id: userId ,  //o y u
         published: true
     } 
@@ -97,5 +100,6 @@ module.exports ={
     createPost,
     editPost,
     deletePost, 
-    getPostByIdLogged
+    getPostByIdLogged,
+    getLoggedPost
 }
